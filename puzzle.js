@@ -1,26 +1,26 @@
 // Snippets de código para poder componer el programa
 
-//Usado?: 
+//Usado?: y
   const middlewares = require('./middlewares');
-//--- Explicación: 
+//--- Explicación: Lo necesitamos requerir en el routes.js para acceder a parametros como req.session.palabrasecreta...
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 const bodyParser = require('body-parser');
-//--- Explicación:
+//--- Explicación: requerimos body parse para procesar datos de solicitudes, en este caso datos de formulario.
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y 
 const session = require('express-session');
-//--- Explicación:
+//--- Explicación:  requerimos express-session para almacenar los datos de sesion.
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 const express = require('express');
-//--- Explicación:
+//--- Explicación:requerir express en app.js
 
 // -------------------------------------------------------------------------------------
 
@@ -36,39 +36,39 @@ const session = require('express-session');
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 const dotenv = require('dotenv');
-//--- Explicación:
+//--- Explicación: segun he entendido, carga variables de entorno de un archivo .env en Node.js
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 const middlewares = require('./middlewares');
-//--- Explicación:
+//--- Explicación: para poder exportar el codigo de esa ruta, hay que requerirla en app.js
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 const routes = require('./routes');
-//--- Explicación:
+//--- Explicación:  para poder exportar el codigo de esa ruta, hay que requerirla en app.js
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 dotenv.config();
-//--- Explicación:
+//--- Explicación: invocamos para que pueda leer el .env y utilizarlo cuando se necesario.
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 const app = express();
-//--- Explicación:
+//--- Explicación: invocar express en app.js
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: y
 const PORT = 4000;
-//--- Explicación:
+//--- Explicación: hacemos variable del puerto para usarla despues en el app.listen
 
 // -------------------------------------------------------------------------------------
 
@@ -84,19 +84,19 @@ dotenv.config();
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:y
 middlewares.setupApp(app);
-//--- Explicación: 
+//--- Explicación: ejecuta la funcion especificada, con el argumento app
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:y
 routes.setup(app);
-//--- Explicación: 
+//--- Explicación: ejecuta la funcion especificada, con el argumento app
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:y
 const validarPalabraMiddleware = (req, res, next) => {
   const palabraCorrecta = process.env.PALABRA_SECRETA || '';
 
@@ -107,13 +107,13 @@ const validarPalabraMiddleware = (req, res, next) => {
     res.redirect('/?error=1');
   }
 };
-//--- Explicación: 
+//--- Explicación: hacemos una funcion en la que, guardamos la palabra secreta. Si lo escrito en el formulario es igual a la palabra correcta, guarda la palabra para la sesion y siguiente paso. En caso de no ser iguales, te redirige a un error.
 
 
 // -------------------------------------------------------------------------------------
 
 
-//Usado?:
+//Usado?: y 
 const setup = (app) => {
   app.get('/', (req, res) => {
     const mensajeError = req.query.error
@@ -124,13 +124,13 @@ const setup = (app) => {
     }
   //Aquí va código dentro
 })}
-//--- Explicación: 
+//--- Explicación: se utiliza en el routes para definir la ruta raiz, luego define los dos tipos de mensajes de error con los parametros de la URL y por ultimo, si la sesion esta activa, te redirige a /profile.
 
 
 // -------------------------------------------------------------------------------------
 
 
-//Usado?:
+//Usado?: y
 res.send(`
   <html>
     <body>
@@ -144,12 +144,12 @@ res.send(`
     </body>
   </html>
 `);
-//--- Explicación: 
+//--- Explicación: HTML de inicio de sesion con el formulario a rellenar.
 
 
 // -------------------------------------------------------------------------------------
 
-
+//Usado: y
 const setupAPP = (app) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(session({
@@ -158,8 +158,9 @@ const setupAPP = (app) => {
     saveUninitialized: true,
   }));
 };
+//---Explicación: creamos function setupAPP con el argumento app. La primera linea se encarga de manejar los datos del formulario en este caso. Y el session, habilita las sesiones en Express. 
 
-//Usado?:
+//Usado?:y
 app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
   res.send(`
     <h1>Ruta del Perfil</h1>
@@ -168,7 +169,7 @@ app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
     </form>
   `);
 });
-//--- Explicación: 
+//--- Explicación: definimos aqui el /profile, con el middleware que verifique la sesion, y su html correspondiente para hacer un log out.
 
 // -------------------------------------------------------------------------------------
 
@@ -190,15 +191,15 @@ app.use(session({
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?: y
 app.listen(PORT, () => {
   console.log(`Servidor en ejecución en http://localhost:${PORT}`);
 });
-//--- Explicación: 
+//--- Explicación: levantar servidor utilizando el puerto escogido antes
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:y
 const verificarSesionMiddleware = (req, res, next) => {
   if (req.session.palabraSecreta) {
     next();
@@ -206,7 +207,7 @@ const verificarSesionMiddleware = (req, res, next) => {
     res.redirect('/?error=2');
   }
 };
-//--- Explicación: 
+//--- Explicación: otra funcion que nos dice, si la palabra secreta es la correcta para iniciar la session, pasa al siguiente paso. En caso de no serlo, error!
 
 // -------------------------------------------------------------------------------------
 
@@ -225,7 +226,7 @@ app.get('/profile', middlewares.verificarSesionMiddleware, (req, res) => {
 // -------------------------------------------------------------------------------------
 
 
-//Usado?:
+//Usado?:y
 app.post('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -234,25 +235,25 @@ app.post('/logout', (req, res) => {
     res.redirect('/');
   });
 });
-//--- Explicación: 
+//--- Explicación: cuando pulsamos el Log Out, se destruye la sesion con req.session.destroy, se le pasa el argumento err para definir un error en caso de fallar el log out. Una vez cerrada sesion te redirige a la raiz /.
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?: y
 module.exports = {
   setup,
 };
-//--- Explicación:
+//--- Explicación: para poder exportar setup de routes.js donde queramos
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?: y
 module.exports = {
   validarPalabraMiddleware,
   verificarSesionMiddleware,
   setupAPP,
 };
-//--- Explicación:
+//--- Explicación: para poder exportar cada una de las funciones de middleware.js donde queramos
 
 // -------------------------------------------------------------------------------------
 
